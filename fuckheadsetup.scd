@@ -1,10 +1,16 @@
 ~isStereo = 0;
 TempoClock.default.tempo_(62/60);
+~kickAmp = 0.85;
+~hatsAmp = 0.2;
+~pedalAmp = 0.45;
+~rushAmp = 0.45;
 ~snareAmp = 0.8;
 ~noteVideo = true;
 ~noteRandom = false;
 ~backingAmp = 0.5;
 ~shiftChance = 0;
+~voxAmp = 0.8;
+~fastVoxAmp = 1.5;
 
 ~setLyrics = {
     ~verse = Dictionary[];
@@ -26,12 +32,13 @@ TempoClock.default.tempo_(62/60);
     ~verse.add(\up ->           [1379007, 1388164]);
     ~verse.add(\a1 ->            [1387960, 1397321]);
     ~verse.add(\beer ->         [1397321, 1423775]);
+    ~verse.add(\beers ->         [1397321, 1423775]);
     ~verse.add(\get ->          [1455316, 1463862]);
     ~verse.add(\over ->         [1464269, 1482380]);
     ~verse.add(\here ->         [1486857, 1502729]);
     ~verse.add(\play1 ->         [1508834, 1523688]);
     ~verse.add(\video1 ->        [1529590, 1570898]);
-    ~verse.add(\games1 ->         [1570898, 1685260]);
+    ~verse.add(\game ->         [1570898, 1685260]);
     ~verse.add(\his ->          [1713997, 1724986]);
     ~verse.add(\favourite ->    [1724986, 1741672]);
     ~verse.add(\sundress ->     [1742282, 1789085]);
@@ -59,7 +66,7 @@ TempoClock.default.tempo_(62/60);
     ~verse.add(\on ->           [2314293, 2356619]);
     ~verse.add(\play2 ->         [2374933, 2389585]);
     ~verse.add(\video2 ->        [2399963, 2433945]);
-    ~verse.add(\games2 ->         [2433945, 2522057]);
+    ~verse.add(\games1 ->         [2433945, 2522057]);
 
     ~chorus = Dictionary[];
     ~chorus.add(\its ->             [2553394, 2565400]);
@@ -83,13 +90,13 @@ TempoClock.default.tempo_(62/60);
     ~chorus.add(\earth ->           [3049096, 3067207]);
     ~chorus.add(\with1 ->            [3067207, 3081655]);
     ~chorus.add(\you5 ->            [3086335, 3126829]);
-    ~chorus.add(\tell2 ->            [3313085, 3143923]);
+    ~chorus.add(\tell2 ->            [3130000, 3143923]);
     ~chorus.add(\me2 ->              [3143923, 3151452]);
     ~chorus.add(\all3 ->            [3154911, 3165289]);
     ~chorus.add(\things ->          [3175667, 3197441]);
     ~chorus.add(\want ->           [3216162, 3248517]);
     ~chorus.add(\wanna ->           [3216162, 3248517]);
-    ~chorus.add(\you9 ->            [3199310, 3214078]);
+    ~chorus.add(\you8 ->            [3199310, 3214078]);
     ~chorus.add(\do2 ->              [3250551, 3304031]);
     ~chorus.add(\I3 ->               [3302441, 3315668]);
     // ~chorus.add(\I ->               [~chorus[\I],[3302441, 3315668]]);
@@ -117,6 +124,8 @@ TempoClock.default.tempo_(62/60);
     ~chorus.add(\built ->           [3902534, 3929395]);
     ~chorus.add(\for3 ->             [3929395, 3944249]);
     ~chorus.add(\two ->             [3945674, 3985151]);
+    ~chorus.add(\too ->             [3945674, 3985151]);
+    ~chorus.add(\to ->             [3945674, 3985151]);
     ~chorus.add(\only ->            [3993291, 4024035]);
     ~chorus.add(\worth ->            [4026017, 4038325]);
     ~chorus.add(\living1 ->          [4038058, 4081198]);
@@ -143,13 +152,14 @@ TempoClock.default.tempo_(62/60);
     ~verse2.add(\with2 ->            [4918221, 4931351]);
     ~verse2.add(\the7 ->             [4931351, 4940441]);
     ~verse2.add(\stars1 ->           [4960136, 4987658]);
+    ~verse2.add(\star1 ->           [4960136, 4985000]);
     ~verse2.add(\living2 ->          [4987406, 5008869]);
     ~verse2.add(\for4 ->             [5008869, 5018716]);
     ~verse2.add(\the8 ->             [5018716, 5025786]);
     ~verse2.add(\fame ->            [5029826, 5074266]);
     ~verse2.add(\kissing ->         [5158349, 5182842]);
     ~verse2.add(\in3 ->              [5182842, 5190922]);
-    ~verse2.add(\the9 ->             [4808635, 4834643]);
+    ~verse2.add(\the9 ->             [5190922, 5201119]);
     ~verse2.add(\blue ->            [5202790, 5218950]);
     ~verse2.add(\dark ->            [5220212, 5241422]);
     ~verse2.add(\playing1 ->         [5247735, 5267430]);
@@ -157,13 +167,14 @@ TempoClock.default.tempo_(62/60);
     ~verse2.add(\wild ->            [5290155, 5310608]);
     ~verse2.add(\darts ->           [5310608, 5330050]);
     ~verse2.add(\video3 ->           [5334090, 5369188]);
-    ~verse2.add(\games3 ->            [5375501, 5420446]);
+    ~verse2.add(\game2 ->            [5375501, 5420446]);
     ~verse2.add(\heholds ->         [5495691, 5518669]);
     ~verse2.add(\me3 ->              [5518669, 5528769]);
     ~verse2.add(\arms ->            [5570179, 5591137]);
     ~verse2.add(\drunk ->           [5595429, 5608307]);
     ~verse2.add(\seeing ->          [5635072, 5653505]);
     ~verse2.add(\stars2 ->          [5654767, 5680017]);
+    ~verse2.add(\star2 ->          [5654767, 5677500]);
     ~verse2.add(\think ->           [5728245, 5748950]);
     ~verse2.add(\watching2 ->        [5848941, 5872423]);
     ~verse2.add(\friends ->         [5892876, 5918126]);
@@ -176,7 +187,7 @@ TempoClock.default.tempo_(62/60);
     ~verse2.add(\fun ->             [6110532, 6143105]);
     ~verse2.add(\playing2 ->        [6175425, 6197392]);
     ~verse2.add(\video4 ->          [6196536, 6234742]);
-    ~verse2.add(\games4 ->          [6237975, 6309685]);
+    ~verse2.add(\games2 ->          [6237975, 6309685]);
 
     ~lyrics = Dictionary[];
     [~verse, ~chorus, ~verse2].do { |item, i|
@@ -259,8 +270,10 @@ TempoClock.default.tempo_(62/60);
             i.postln;
         };
     });
-
+    
     Tdef(\outro, {
+        var totalCount;
+        
         ~verb.set(\amp, 0.5);
         ~verb.set(\mix, 0.5);
         ~verb.set(\room, 0.4);
@@ -268,17 +281,37 @@ TempoClock.default.tempo_(62/60);
         ~verbamp = 0.5;
         ~verbmix = 0.5;
         ~verbroom = 0.4;
-        {~text.align_(\left); ~text.string_("")}.fork(AppClock);
-
+        totalCount = ~outroNotes.size + (~outroNotes2.size*2);
+        
         [~outroNotes, ~outroNotes2].do { |item, i|
             var repeats = item.size*(i+1);
             repeats.do { |j|
+                var sumCount;
                 var choice = item.choose;
                 var times = j + 1;
+                
+                
+                if(item == ~outroNotes) {
+                    sumCount = j;
+                } {
+                    sumCount = ~outroNotes.size + j                    
+                };
 
+                ~kickAmp    = sumCount.linlin(0, totalCount-10, 0.85, 0);
+                ~kickAmp    = sumCount.linlin(0, totalCount-10, 0.85, 0);
+                ~hatsAmp    = sumCount.linlin(0, totalCount-10, 0.2;, 0);
+                ~pedalAmp   = sumCount.linlin(0, totalCount-10, 0.45, 0);
+                ~rushAmp    = sumCount.linlin(0, totalCount-10, 0.45, 0);
+                ~snareAmp   = sumCount.linlin(0, totalCount-10, 0.8, 0);
+                ~backingAmp = sumCount.linlin(0, totalCount-10, 0.5, 0);
+                ~fastVoxAmp = sumCount.linlin(0, totalCount-10, 1.5, 0);
 
                 if(item == ~outroNotes2) {
                     choice = item.wchoose([1,1,1,1,1,3,1].normalizeSum);
+                    if(Tdef(\Vox).isPlaying) {
+                        Tdef(\Vox).stop;
+                        {~text.string_("")}.fork(AppClock);
+                    };
                 };
                 ~verbamp = ~verbamp - 0.025;
                 ~verbroom = ~verbroom + 0.025;
@@ -298,7 +331,7 @@ TempoClock.default.tempo_(62/60);
             };
 
             if(item == ~outroNotes2) {
-                {~text.align_(\center); ~text.string_("www.molocollective.com")}.fork(AppClock);
+                {~text.align_(\center); ~text.string_("download the interactive version \n      www.molocollective.com")}.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
             ((item.last[1] - item.last[0]) / b.sampleRate).wait;
@@ -306,9 +339,10 @@ TempoClock.default.tempo_(62/60);
 
     });
 
+
     Tdef(\Kick, {
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~kick, \out, ~isStereo ?? 2, \amp, 0.85]);
+            Synth(\DelDrumPlayer, [\buf, ~kick, \out, ~isStereo ?? 2, \amp, ~kickAmp]);
             0.5.wait;
         }
     });
@@ -316,7 +350,7 @@ TempoClock.default.tempo_(62/60);
     Tdef(\Pedal, {
         0.25.wait;
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, 0.45, \out, ~isStereo ? 4]);        
+            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, ~pedalAmp, \out, ~isStereo ? 4]);        
             0.5.wait;
         }
     });
@@ -351,7 +385,7 @@ TempoClock.default.tempo_(62/60);
         0.375.wait;
         inf.do {
             var choice = ~hats.choose;
-            Synth(\DelDrumPlayer, [\buf, choice, \amp, 0.2, \out, ~isStereo ? 8]);
+            Synth(\DelDrumPlayer, [\buf, choice, \amp, ~hatsAmp, \out, ~isStereo ? 8]);
             0.5.wait;
         }
     });
@@ -367,7 +401,7 @@ TempoClock.default.tempo_(62/60);
             } {
                 collection = ~snaresLeft[0..4];
             };
-            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*0.5, \out, ~isStereo ? 10]);
+            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*~rushAmp, \out, ~isStereo ? 10]);
             0.125.wait;
         }
     });
@@ -406,7 +440,7 @@ TempoClock.default.tempo_(62/60);
             if(~shiftChance.coin) {
                 Synth.before(~shift, \DelRayer, [\buf, b, \start, choice[0], \end, choice[0] + (dur * b.sampleRate), \trim, 0.03, \pan, [1, -1].choose, \amp, 1.5, \out, ~shiftBus]);            
             } {
-                Synth(\DelRayer, [\buf, b, \start, choice[0], \end, choice[0] + (dur * b.sampleRate), \trim, 0.03, \pan, [1, -1].choose, \amp, 1.5]);
+                Synth(\DelRayer, [\buf, b, \start, choice[0], \end, choice[0] + (dur * b.sampleRate), \trim, 0.03, \pan, [1, -1].choose, \amp, ~fastVoxAmp]);
 
             };
 
@@ -444,7 +478,7 @@ TempoClock.default.tempo_(62/60);
 ~setFunctions = {
     ~getDur = { [1].wchoose([1].normalizeSum); };
     
-    ~shitvox = {|words, quant=1, min=0.25|{
+    ~shitvox = {|words, quant=1, min=0.25, callback|{
         var wordsplit = words.split($ );
         wordsplit.do { |item, i|
             var word;
@@ -453,6 +487,7 @@ TempoClock.default.tempo_(62/60);
             var split, numbers, integers, choice;
             var string = "";
             
+            item = item.replace("?", "");
             if(item.includes($[)) {
                 split = item.split($[);
                 numbers = split[1].tr($], '');
@@ -478,12 +513,10 @@ TempoClock.default.tempo_(62/60);
                 word = List[];
                 10.do { |i|
                     var attempt = ~lyrics[(symbol ++ (10-i)).asSymbol];
-                    "attempt: ".post; (attempt).postln;
                     if(attempt.notNil) {
                         word.add(attempt);
                     };
                 };
-                word.postln;
                 if(word.size >= 1) {
                     word = word.choose;
                 } {
@@ -529,7 +562,7 @@ TempoClock.default.tempo_(62/60);
                 };
             };
 
-            Synth.before(~verb, \DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0, \out, ~verbBus]);
+            Synth.before(~verb, \DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0, \out, ~verbBus, \amp, ~voxAmp]);
             // Synth(\DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0]);
             dur = ((word[1] - word[0]) / b.sampleRate).round(min).max(min);
             // dur = (((word[1] - word[0]) / b.sampleRate) * 4).ceil / 4;
@@ -546,6 +579,10 @@ TempoClock.default.tempo_(62/60);
             };
             dur.wait;
             // 1.wait;
+        };
+        
+        if(callback.notNil) {
+            callback.();
         };
     }.fork(quant:Quant(quant));
     };
