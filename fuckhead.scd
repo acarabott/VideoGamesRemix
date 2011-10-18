@@ -2,7 +2,6 @@
 
 Tdef(\intro).play(quant:(1));
 
-
 ~people = ["I", "you", "they"];
 ~feelings = ["love", "like", "want", "say", "play with", "take", "kiss"];
 ~prefixs = ["my", "his", "your"];
@@ -36,7 +35,7 @@ Tdef(\SnareRush).play(quant:Quant(4));
 ~noteVideo = true;
 
 ~snareAmp = 0;
-~getDur = { [0.25, 0.5].wchoose([4, 1].normalizeSum); };
+~getDur = { [0.125, 1].wchoose([4, 1].normalizeSum); };
 ~backingAmp = 0.5;
 
 Tdef(\Vox).play(quant:Quant(1));~text.align_(\center);
