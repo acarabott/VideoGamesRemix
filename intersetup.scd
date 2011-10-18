@@ -1,16 +1,19 @@
 TempoClock.default.tempo_(62/60);
 
 ~setVariables = {
+    ~continueSentences = true;
+    ~sentencePlaying = false;
     ~kickAmp = 0.85;
     ~hatsAmp = 0.2;
     ~pedalAmp = 0.45;
     ~rushAmp = 0.45;
     ~snareAmp = 0.8;
-    ~currentKickAmp = ~kickAmp;
-    ~currentSnareAmp = ~snareAmp;
-    ~currentHatsAmp = [~pedalAmp, ~hatsAmp];
-    ~currentRushAmp = ~rushAmp;
-    
+    ~kickMult = 1;
+    ~snareMult = 1;
+    ~hatsMult = 1;
+    ~pedalMult = 1;
+    ~rushMult = 1;
+        
     ~wordDur = 1;
     ~noteVideo = true;
     ~noteRandom = false;
@@ -365,18 +368,23 @@ TempoClock.default.tempo_(62/60);
             };
 
             if(item == ~outroNotes2) {
-                {~text.align_(\center); ~text.string_("www.molocollective.com")}.fork(AppClock);
+                {
+                    ~text.align_(\center); 
+                    ~text.string_("www.molocollective.com");
+                    m.stop;
+                    1.wait;
+                    m.path_("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logo.png");
+                }.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
             ((item.last[1] - item.last[0]) / b.sampleRate).wait;
         };
-
     });
 
 
     Tdef(\Kick, {
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~kick, \out, 0, \amp, ~kickAmp]);
+            Synth(\DelDrumPlayer, [\buf, ~kick, \out, 0, \amp, ~kickAmp * ~kickMult]);
             0.5.wait;
         }
     });
@@ -384,7 +392,7 @@ TempoClock.default.tempo_(62/60);
     Tdef(\Pedal, {
         0.25.wait;
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, ~pedalAmp, \out, 0]);        
+            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, ~pedalAmp * ~pedalMult, \out, 0]);        
             0.5.wait;
         }
     });
@@ -396,17 +404,17 @@ TempoClock.default.tempo_(62/60);
         inf.do{|i|
             var count = 0;
             var wait = 1;
-            Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresLeft[5..8].choose, \out, out, \amp, ~snareAmp]);
+            Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresLeft[5..8].choose, \out, out, \amp, ~snareAmp * ~snareMult]);
             offset.wait;
             count = count + 1;
-            Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresRight[5..8].choose, \out, out, \amp, ~snareAmp]);
+            Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresRight[5..8].choose, \out, out, \amp, ~snareAmp * ~snareMult]);
 
             if(i%4 == 3 && 0.5.coin) {
                 wait = 0.5;
                 0.25.wait;
-                Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresLeft[0..7].choose, \out, out, \amp, ~snareAmp]);
+                Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresLeft[0..7].choose, \out, out, \amp, ~snareAmp * ~snareMult]);
                 0.125.wait;
-                Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresRight[0..7].choose, \out, out, \amp, ~snareAmp]);
+                Synth.before(~snareVerb, \DelDrumPlayer, [\buf, ~snaresRight[0..7].choose, \out, out, \amp, ~snareAmp * ~snareMult]);
                 0.125.wait;
             };
 
@@ -418,7 +426,7 @@ TempoClock.default.tempo_(62/60);
         0.375.wait;
         inf.do {
             var choice = ~hats.choose;
-            Synth(\DelDrumPlayer, [\buf, choice, \amp, ~hatsAmp, \out, 0]);
+            Synth(\DelDrumPlayer, [\buf, choice, \amp, ~hatsAmp * ~hatsMult, \out, 0]);
             0.5.wait;
         }
     });
@@ -434,7 +442,7 @@ TempoClock.default.tempo_(62/60);
             } {
                 collection = ~snaresLeft[0..4];
             };
-            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*~rushAmp, \out, 0]);
+            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*~rushAmp * ~rushMult, \out, 0]);
             0.125.wait;
         }
     });
@@ -486,13 +494,13 @@ TempoClock.default.tempo_(62/60);
 
             wait.wait;
         }
-    });
-    
+    });    
 };
+
 ~setGUI = {{
     w = Window("", Rect(100, 100, 1280, 760)).front;
     w.view.background_(Color.black);
-    m = SCMovieView(w, Rect(100,10,800, 450));
+    m = SCMovieView(w, Rect(100,10,800, 450));    
     m.showControllerAndAdjustSize(false, false);
     m.path_("sounds/videogames.mp4");
     m.muted_(true);
@@ -562,11 +570,15 @@ TempoClock.default.tempo_(62/60);
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
     
-    ~linkText = StaticText(~lyricsComp, Rect(20, 600, 260, 260))
+    ~logoImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logocrop.png");
+    ~logoView = UserView(~lyricsComp, Rect(75, 580, 130, 130))
+        .backgroundImage_(~logoImage);
+
+    ~linkText = StaticText(~lyricsComp, Rect(30, 600, 260, 260))
         .string_("www.molocollective.com")
         .font_(Font("Helvetica", 20))
         .stringColor_(Color.white);
-        
+    
     ~comp = CompositeView(w, Rect(50, 550, 1000, 210));
     // ~comp.background_(Color.white);
     ~drumWidth = 340;
@@ -582,14 +594,15 @@ TempoClock.default.tempo_(62/60);
     ~kickImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/kick.jpg");
     ~kickView = UserView(~drumsComp, Rect(10, 100, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
     ~kickOn = true;
+    
     ~kickView.mouseDownAction_({
         var alpha;
         if(~kickOn) {
             alpha = ~drumAlpha;
-            ~kickAmp = 0;
+            ~kickMult = 0;
         } {
             alpha = 1;
-            ~kickAmp = ~currentKickAmp;
+            ~kickMult = 1;
         };
 
         ~kickOn = ~kickOn.not;
@@ -603,10 +616,10 @@ TempoClock.default.tempo_(62/60);
         var alpha;
         if(~snareOn) {
             alpha = ~drumAlpha;
-            ~snareAmp = 0;
+            ~snareMult = 0;
         } {
             alpha = 1;
-            ~snareAmp = ~currentSnareAmp;
+            ~snareMult = 1;
         };
 
         ~snareOn = ~snareOn.not;
@@ -620,12 +633,12 @@ TempoClock.default.tempo_(62/60);
         var alpha;
         if(~hatsOn) {
             alpha = ~drumAlpha;
-            ~pedalAmp = 0;
-            ~hatsAmp = 0;
+            ~pedalMult = 0;
+            ~hatsMult = 0;
         } {
             alpha = 1;
-            ~pedalAmp = ~currentHatsAmp[0];
-            ~hatsAmp = ~currentHatsAmp[1];
+            ~pedalMult = 1;
+            ~hatsMult = 1;
         };
 
         ~hatsOn = ~hatsOn.not;
@@ -639,10 +652,10 @@ TempoClock.default.tempo_(62/60);
         var alpha;
         if(~brushesOn) {
             alpha = ~drumAlpha;
-            ~rushAmp = 0;
+            ~rushMult = 0;
         } {
             alpha = 1;
-            ~rushAmp = ~currentRushAmp;
+            ~rushMult = 1;
         };
 
         ~brushesOn = ~brushesOn.not;
@@ -660,8 +673,6 @@ TempoClock.default.tempo_(62/60);
                 {0}  { Tdef(\outro).play;Tdef(\intro).stop};
 
         });
-
-
 
     ~vocalWidth = 400;
     // Color.new(0.3,0.3,0.3)
@@ -702,23 +713,6 @@ TempoClock.default.tempo_(62/60);
     });
 
     ~currentSentence = nil;
-    ~sentences = EZPopUpMenu.new(~vocalTabs.views[1],
-        Rect(10, 10, ~vocalWidth-20, 30),
-    	"Theme: ",
-    	[	
-    		'I love...'         ->  {|a| ~resetLove.(); ~currentSentence = ~iLove},
-    		'Your ___ is bad'   ->  {|a| ~resetBad.(); ~currentSentence = ~isBad},
-    		'You think...'      ->  {|a| ~resetYouThink.(); ~currentSentence = ~youThink}
-    	],
-    	globalAction: {|a| },
-    	initVal: 1,
-    	initAction: true,
-    	labelWidth: 50,
-    	labelHeight: 20,
-    	layout: \horz,
-    	gap: 2@2
-    	);
-    ~sentences.setColors(stringColor:Color.white, menuStringColor:Color.white);
 
     ~sentencesStartButton = Button(~vocalTabs.views[1], Rect(240, 60, 150,30))
         .states_([
@@ -727,16 +721,38 @@ TempoClock.default.tempo_(62/60);
         ])
         .action_({|button|
             switch (button.value)
-                {1}  {~currentSentence.();}
+                {1}  {
+                    if(~sentencePlaying.not) {
+                        ~currentSentence.();
+                        ~continueSentences = true;
+                    } {
+                        
+                        ~sentencesStartButton.valueAction_(0);
+                    };
+                }
                 {0}  {
-                    ~iLove = {};
-                    ~isBad = {};
-                    ~youThink = {};
+                    ~continueSentences = false;
                 };
-            
         });
-
-
+    
+    ~sentences = EZPopUpMenu.new(~vocalTabs.views[1],
+        Rect(10, 10, ~vocalWidth-20, 30),
+    	"Theme: ",
+    	[	
+    		'I love...'         ->  {|a| ~currentSentence = ~iLove},
+    		'Your ___ is bad'   ->  {|a| ~currentSentence = ~isBad},
+    		'You think...'      ->  {|a| ~currentSentence = ~youThink}
+    	],
+    	globalAction: {|a| ~sentencesStartButton.valueAction_(0); },
+    	initVal: 1,
+    	initAction: true,
+    	labelWidth: 50,
+    	labelHeight: 20,
+    	layout: \horz,
+    	gap: 2@2
+    	);
+    	
+    ~sentences.setColors(stringColor:Color.white, menuStringColor:Color.white);
 
     ~speeds = [1, 0.5, 0.25, 0.125, 0.0625];
     ~speedSpec = ControlSpec(0, 4, \lin, 1, 1); 	// controlSpec
@@ -780,37 +796,36 @@ TempoClock.default.tempo_(62/60);
 
 
 ~setFunctions = {    
-    
-    ~resetLove = {
-        ~iLove = { 
-            var choices;
-            var choice;
-            choices = [
-                "my" + ~singular.choose,
-                "my" + ~descriptions.choose + ~singular.choose,
-                "your" + ~singular.choose,
-                "your" + ~descriptions.choose + ~singular.choose,
-                "my" + ~descriptions.choose + ~singular.choose + "better than your" + ~descriptions.choose + ~singular.choose,
-                "your" + ~descriptions.choose + ~singular.choose + "better than my" + ~descriptions.choose + ~singular.choose,
-            ];
+    ~iLove = { 
+        var choices;
+        var choice;
+        
+        choices = [
+            "my" + ~singular.choose,
+            "my" + ~descriptions.choose + ~singular.choose,
+            "your" + ~singular.choose,
+            "your" + ~descriptions.choose + ~singular.choose,
+            "my" + ~descriptions.choose + ~singular.choose + "better than your" + ~descriptions.choose + ~singular.choose,
+            "your" + ~descriptions.choose + ~singular.choose + "better than my" + ~descriptions.choose + ~singular.choose,
+        ];
 
-            choice = "I love" + choices.wchoose([1,1,1,1,3,1.5].normalizeSum);
-            ~shitvox.(choice, callback:~iLove)
-        };
+        choice = "I love" + choices.wchoose([1,1,1,1,3,1.5].normalizeSum);
+        
+        ~shitvox.(choice, callback:~iLove);
     };
 
-    ~resetBad = {
-        ~isBad = {
-            ~shitvox.("your" + (["body", "body"] ++ ~singular).choose + "is1 bad", 0.25, callback:~isBad)
-        };
+    ~isBad = {
+        ~shitvox.("your" + (["body", "body"] ++ ~singular).choose + "is1 bad", 0.25, callback:~isBad);
     };
 
-    ~resetYouThink = {
-        ~youThink = { ~shitvox.("you1 think your" + ["my big love", "big", "the best", "best", "fast", "swinging", "wild", "honey", "loving", "a star"].choose, 0.25, callback:~youThink) };
+    ~youThink = {
+        ~shitvox.("you1 think your" + ["my big love", "big", "the best", "best", "fast", "swinging", "wild", "honey", "loving", "a star"].choose, 0.25, callback:~youThink) 
+        
     };
     
     ~shitvox = {|words, quant=1, min=0.25, callback|{
         var wordsplit = words.split($ );
+        ~sentencePlaying = true;
         wordsplit.do { |item, i|
             var word;
             var dur;
@@ -912,9 +927,11 @@ TempoClock.default.tempo_(62/60);
             // 1.wait;
         };
         
-        if(callback.notNil) {
+        if(~continueSentences) {
             callback.();
         };
+        ~sentencePlaying = false;
+        
     }.fork(quant:Quant(quant));
     };
     
@@ -1065,12 +1082,12 @@ TempoClock.default.tempo_(62/60);
 };
 
 s.waitForBoot {{
-    ~setVariables.();
     ~addSynthDefs.();
     s.sync;
     ~loadBuffers.();    
     s.sync;
     ~setFunctions.();
+    ~setVariables.();
     ~setGUI.();
     ~setRoutines.();
     ~setLyrics.();
