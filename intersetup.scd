@@ -678,8 +678,9 @@ TempoClock.default.tempo_(62/60);
     // Color.new(0.3,0.3,0.3)
     ~vocalTabs = TabbedView(~comp, Rect(140, 60, ~vocalWidth, 140), colors:[Color.new(0.2,0.2,0.2)], labels:["Enter lyrics", "Generated Sentences", "Single Words"]);
     ~vocalTabs.stringColor_(Color.white);
-    ~enterField = SCTextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 40));
+    ~enterField = TextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 40));
     ~enterField.font_(Font("Helvetica", 30));        
+    ~enterField.string_("enter words from the list");
     ~strippedLyrics = ~lyrics.keys.collect { |item, i| 
         10.do { |j|
             item = item.asString.replace(j.asString, "")
@@ -690,9 +691,20 @@ TempoClock.default.tempo_(62/60);
     ~fieldStartButton = Button(~vocalTabs.views[0], Rect(240, 60, 150,30))
         .states_([
             ["Sing it!", Color.black, Color.new(0,0.7,0)],
+            ["Stop singing!", Color.white, Color.new(0.7, 0, 0)]
         ])
         .action_({|button|
-            ~shitvox.(~enterField.value);
+            switch (button.value)
+                {1}  {
+                    var func = {{~shitvox.(~enterField.value, callback:func)}.fork(AppClock)};
+                    ~continueSentences = true;
+                    
+                    ~shitvox.(~enterField.value, callback:func);
+                }
+                {0}  {
+                    ~continueSentences = false;
+                };
+            
         });
     
     ~enterField.keyDownAction_({|view, char, mod, uni, key|
