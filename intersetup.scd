@@ -1,16 +1,18 @@
-~isStereo = 0;
 TempoClock.default.tempo_(62/60);
-~kickAmp = 0.85;
-~hatsAmp = 0.2;
-~pedalAmp = 0.45;
-~rushAmp = 0.45;
-~snareAmp = 0.8;
-~noteVideo = true;
-~noteRandom = false;
-~backingAmp = 0.5;
-~shiftChance = 0;
-~voxAmp = 0.8;
-~fastVoxAmp = 1.5;
+
+~setVariables = {
+    ~kickAmp = 0.85;
+    ~hatsAmp = 0.2;
+    ~pedalAmp = 0.45;
+    ~rushAmp = 0.45;
+    ~snareAmp = 0.8;
+    ~noteVideo = true;
+    ~noteRandom = false;
+    ~backingAmp = 0.5;
+    ~shiftChance = 0;
+    ~voxAmp = 0.8;
+    ~fastVoxAmp = 1.5;
+}
 
 ~setLyrics = {
     ~verse = Dictionary[];
@@ -195,10 +197,23 @@ TempoClock.default.tempo_(62/60);
             ~lyrics.add(key -> value);
         };  
     };
+    
+    
+    ~people = ["I", "you", "they"];
+    ~feelings = ["love", "like", "want", "say", "play with", "take", "kiss"];
+    ~prefixs = ["my", "his", "your"];
+    ~descriptions = ["big", "best", "bad", "bestest", "fast", "favourite", "swinging", "old", "blue", "wild", "drunk"];
+    ~objects = ["swinging", "car", "yard", "whistling", "video", "video games", "games", "sundress", "undressed", "kiss", "perfume", "play", "everything", "heaven", "you", "honey", "world", "living", "somebody", "beer", "love", "loving", "baby", "me", "singing", "bar", "stars", "fame", "kissing", "pool", "darts", "friends", "falling", "playing", "arms", "body"];
+
+    ~singular = ["singing", "bar", "fame", "kissing", "playing", "pool", "car", "swinging", "yard", "whistling", "sundress", "body", "kiss", "beer", "love", "loving"];
+    ~plural = ["friends", "arms"];
+
 };
 
-~setRoutines = {
+~setRoutines = {``
     Tdef(\intro, {
+        Tdef(\outro).stop;
+        ~setVariables.();
         {
             m.currentTime_(0);
             m.start;
@@ -342,7 +357,7 @@ TempoClock.default.tempo_(62/60);
 
     Tdef(\Kick, {
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~kick, \out, ~isStereo ?? 2, \amp, ~kickAmp]);
+            Synth(\DelDrumPlayer, [\buf, ~kick, \out, 0, \amp, ~kickAmp]);
             0.5.wait;
         }
     });
@@ -350,14 +365,13 @@ TempoClock.default.tempo_(62/60);
     Tdef(\Pedal, {
         0.25.wait;
         inf.do{
-            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, ~pedalAmp, \out, ~isStereo ? 4]);        
+            Synth(\DelDrumPlayer, [\buf, ~pedals.choose, \amp, ~pedalAmp, \out, 0]);        
             0.5.wait;
         }
     });
 
     Tdef(\Snare, {
         var offset = (0.01,0.02..0.04).choose;
-        // var out = ~isStereo ? 6;
         var out = ~snareBus;
         1.wait;
         inf.do{|i|
@@ -385,7 +399,7 @@ TempoClock.default.tempo_(62/60);
         0.375.wait;
         inf.do {
             var choice = ~hats.choose;
-            Synth(\DelDrumPlayer, [\buf, choice, \amp, ~hatsAmp, \out, ~isStereo ? 8]);
+            Synth(\DelDrumPlayer, [\buf, choice, \amp, ~hatsAmp, \out, 0]);
             0.5.wait;
         }
     });
@@ -401,7 +415,7 @@ TempoClock.default.tempo_(62/60);
             } {
                 collection = ~snaresLeft[0..4];
             };
-            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*~rushAmp, \out, ~isStereo ? 10]);
+            Synth(\DelDrumPlayer, [\buf, collection.choose, \amp, amp*~rushAmp, \out, 0]);
             0.125.wait;
         }
     });
@@ -735,6 +749,7 @@ TempoClock.default.tempo_(62/60);
 
 
 s.waitForBoot {{
+    ~setVariables.();
     ~addSynthDefs.();
     s.sync;
     ~loadBuffers.();    
