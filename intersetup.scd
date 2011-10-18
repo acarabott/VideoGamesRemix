@@ -6,13 +6,30 @@ TempoClock.default.tempo_(62/60);
     ~pedalAmp = 0.45;
     ~rushAmp = 0.45;
     ~snareAmp = 0.8;
+    ~currentKickAmp = ~kickAmp;
+    ~currentSnareAmp = ~snareAmp;
+    ~currentHatsAmp = [~pedalAmp, ~hatsAmp];
+    ~currentRushAmp = ~rushAmp;
+    
+    ~wordDur = 1;
     ~noteVideo = true;
     ~noteRandom = false;
     ~backingAmp = 0.5;
     ~shiftChance = 0;
     ~voxAmp = 0.8;
     ~fastVoxAmp = 1.5;
-}
+};
+
+~reset = {
+    [\outro, \kick, \snare, \pedal, \hats, \rush].do { |item, i|
+        Tdef(item).stop;
+    };
+    {~text.align_(\left); ~text.string_("")}.fork(AppClock);
+    Tdef(\outro).stop;
+    ~setVariables.();
+    ~note.([3, 7.3]);
+};
+
 
 ~setLyrics = {
     ~verse = Dictionary[];
@@ -204,22 +221,20 @@ TempoClock.default.tempo_(62/60);
     ~prefixs = ["my", "his", "your"];
     ~descriptions = ["big", "best", "bad", "bestest", "fast", "favourite", "swinging", "old", "blue", "wild", "drunk"];
     ~objects = ["swinging", "car", "yard", "whistling", "video", "video games", "games", "sundress", "undressed", "kiss", "perfume", "play", "everything", "heaven", "you", "honey", "world", "living", "somebody", "beer", "love", "loving", "baby", "me", "singing", "bar", "stars", "fame", "kissing", "pool", "darts", "friends", "falling", "playing", "arms", "body"];
-
     ~singular = ["singing", "bar", "fame", "kissing", "playing", "pool", "car", "swinging", "yard", "whistling", "sundress", "body", "kiss", "beer", "love", "loving"];
     ~plural = ["friends", "arms"];
 
 };
 
 ~setRoutines = {
+    
     Tdef(\intro, {
-        Tdef(\outro).stop;
-        ~setVariables.();
         {
-            m.currentTime_(0);
+            m.currentTime_(3);
             m.start;
         }.fork(AppClock);
-        ~note.([0, 7.3]);
-        7.3.wait;
+        ~note.([3, 7.3]);
+        4.3.wait;
         ~note.(~introNotes[0]);
 
         (~introNotes[0][1] - ~introNotes[0][0]).wait;
@@ -282,12 +297,16 @@ TempoClock.default.tempo_(62/60);
                 Tdef(\Snare).play(quant:Quant(4));
                 Tdef(\Hats).play(quant:Quant(1));
             };
-            i.postln;
+            
+            if(i == 24) {
+                Tdef(\SnareRush).play(quant:Quant(4));
+            };
         };
     });
     
     Tdef(\outro, {
         var totalCount;
+        {~text.string_("")}.fork(AppClock);
         
         ~verb.set(\amp, 0.5);
         ~verb.set(\mix, 0.5);
@@ -346,7 +365,7 @@ TempoClock.default.tempo_(62/60);
             };
 
             if(item == ~outroNotes2) {
-                {~text.align_(\center); ~text.string_("download the interactive version \n      www.molocollective.com")}.fork(AppClock);
+                {~text.align_(\center); ~text.string_("www.molocollective.com")}.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
             ((item.last[1] - item.last[0]) / b.sampleRate).wait;
@@ -430,7 +449,7 @@ TempoClock.default.tempo_(62/60);
             var dur;
             var word;
 
-            dur = ~getDur.();
+            dur = ~wordDur;
             wait = dur;
             if(dur >= 1) {
                 dur = dur/2;
@@ -470,27 +489,325 @@ TempoClock.default.tempo_(62/60);
     });
     
 };
+~setGUI = {{
+    w = Window("", Rect(100, 100, 1280, 760)).front;
+    w.view.background_(Color.black);
+    m = SCMovieView(w, Rect(100,10,800, 450));
+    m.showControllerAndAdjustSize(false, false);
+    m.path_("sounds/videogames.mp4");
+    m.muted_(true);
+    m.stop;m.currentTime_(0);Tdef(\intro).stop;
+    ~text = StaticText(w, Rect(125,460,750,100));
+    ~text.background_(Color.black);
+    ~text.stringColor_(Color.white);
+    ~text.string_("");
+    ~text.align_(\left);
+    ~text.font_(Font("Helvetica", 30));        
 
-~setGUI = {
-    {
-        w = Window("", Rect(100, 100, 1000, 660)).front;
-        w.view.background_(Color.black);
-        m = SCMovieView(w, Rect(100,10,800, 450));
-        m.showControllerAndAdjustSize(false, false);
-        m.path_("sounds/videogames.mp4");
-        m.muted_(true);
-        m.stop;m.currentTime_(0);Tdef(\intro).stop;
-        ~text = StaticText(w, Rect(125,450,750,200));
-        ~text.background_(Color.black);
-        ~text.stringColor_(Color.white);
-        ~text.string_("");
-        ~text.align_(\left);
-        ~text.font_(Font("Josefin Sans", 50));        
-    }.fork(AppClock);
+    ~lyricsComp = CompositeView(w, Rect(1000, 0, 280,760));
+    ~lyricsLabelFont = Font("Helvetica", 15);
+    ~lyricsTextFont = Font("Helvetica", 15);
+
+    ~peopleString = "I  you  your  they  friends  me  my  his  girls  Paul";
+    
+    ~peopleLabel = SCStaticText(~lyricsComp, Rect(10, 5, 49, 19)).string_("People:").font_(~lyricsLabelFont);
+    ~peopleLabel.stringColor_(Color(0.8,0.8,0));
+
+    ~peopleText = StaticText(~lyricsComp, Rect(20, 4, 260, 60))
+        .string_(~peopleString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+
+    ~actionsString = "say  think  knew  heard  fall  kissing  falling  seeing  swinging  pull  whistling  watching  play  playing  living  singing  loving  tell  pull  lean";
+    ~actionsLabel = StaticText(~lyricsComp, Rect(10, 63, 53, 19)).string_("Actions:").font_(~lyricsLabelFont);
+    ~actionsLabel.stringColor_(Color(0.8,0.8,0));
+
+    ~actionsText = StaticText(~lyricsComp, Rect(20, 25, 260, 140))
+        .string_(~actionsString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+
+    ~thingsString = "earth  car  yard  video  games  sundress  kiss  perfume  everything  heaven  honey  world  somebody  beer beers  love  baby  bar  stars  fame  pool  darts  arms  body  star  town";
+    ~thingsLabel = StaticText(~lyricsComp, Rect(10, 167, 48, 19)).string_("Things:").font_(~lyricsLabelFont);
+    ~thingsLabel.stringColor_(Color(0.8,0.8,0));
+
+    ~thingsText = StaticText(~lyricsComp, Rect(20, 110, 260, 180))
+        .string_(~thingsString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+
+    ~descriptionsString = "fun  better  big  best  bad  bestest  fast  favourite  old  blue  wild  drunk  dark";
+    ~descriptionsLabel = StaticText(~lyricsComp, Rect(10, 286, 86, 19)).string_("Descriptions:").font_(~lyricsLabelFont);
+    ~descriptionsLabel.stringColor_(Color(0.8,0.8,0));
+
+    ~descriptionsText = StaticText(~lyricsComp, Rect(20, 290, 260, 60))
+        .string_(~descriptionsString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+
+    ~feelingsString = "love  like  want  say  play  with  take  kiss";
+    ~feelingsLabel = StaticText(~lyricsComp, Rect(10,350, 260, 19)).string_("Feelings:").font_(~lyricsLabelFont);
+    ~feelingsLabel.stringColor_(Color(0.8,0.8,0));
+    ~feelingsText = StaticText(~lyricsComp, Rect(20, 355, 260, 56))
+        .string_(~feelingsString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+
+    ~miscString = "its    on    the    are    too    to  on  a  of  in  if  do  for  is  all  time  worth  ever  things  that  than  built  now  name up  game undressed  true  over  down  wanna  here  open  was  every  get  even  heholds  some  idea back  two  only  this  place";        
+    ~miscLabel = StaticText(~lyricsComp, Rect(10, 411, 260, 19)).string_("Misc:").font_(~lyricsLabelFont);
+    ~miscLabel.stringColor_(Color(0.8,0.8,0));
+
+    ~miscText = StaticText(~lyricsComp, Rect(20, 320, 260, 250))
+        .string_(~miscString)
+        .font_(~lyricsTextFont)
+        .stringColor_(Color.white);
+    
+    ~linkText = StaticText(~lyricsComp, Rect(20, 600, 260, 260))
+        .string_("www.molocollective.com")
+        .font_(Font("Helvetica", 20))
+        .stringColor_(Color.white);
+        
+    ~comp = CompositeView(w, Rect(50, 550, 1000, 210));
+    // ~comp.background_(Color.white);
+    ~drumWidth = 340;
+    ~drumsComp = CompositeView(~comp, Rect(570,0, ~drumWidth,140));
+    ~drumsComp.background_(Color.black);
+    ~drumsLabel = StaticText(~drumsComp, Rect(0,60,~drumWidth,30));
+    ~drumsLabel.align_(\center);
+    ~drumsLabel.font_(Font("Helvetica", 30));        
+    ~drumsLabel.stringColor_(Color.white);
+    ~drumsLabel.string_("Drums");
+
+    ~drumAlpha = 0.3;
+    ~kickImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/kick.jpg");
+    ~kickView = UserView(~drumsComp, Rect(10, 100, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
+    ~kickOn = true;
+    ~kickView.mouseDownAction_({
+        var alpha;
+        if(~kickOn) {
+            alpha = ~drumAlpha;
+            ~kickAmp = 0;
+        } {
+            alpha = 1;
+            ~kickAmp = ~currentKickAmp;
+        };
+
+        ~kickOn = ~kickOn.not;
+        ~kickView.backgroundImage_(~kickImage, alpha:alpha);
+    });
+
+    ~snareImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/snare.jpg");
+    ~snareView = UserView(~drumsComp, Rect(95, 100, 75, 75)).background_(Color.white).backgroundImage_(~snareImage);
+    ~snareOn = true;
+    ~snareView.mouseDownAction_({
+        var alpha;
+        if(~snareOn) {
+            alpha = ~drumAlpha;
+            ~snareAmp = 0;
+        } {
+            alpha = 1;
+            ~snareAmp = ~currentSnareAmp;
+        };
+
+        ~snareOn = ~snareOn.not;
+        ~snareView.backgroundImage_(~snareImage, alpha:alpha);
+    });
+
+    ~hatsImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/hats.jpg");
+    ~hatsView = UserView(~drumsComp, Rect(180, 100, 75, 75)).background_(Color.white).backgroundImage_(~hatsImage);
+    ~hatsOn = true;
+    ~hatsView.mouseDownAction_({
+        var alpha;
+        if(~hatsOn) {
+            alpha = ~drumAlpha;
+            ~pedalAmp = 0;
+            ~hatsAmp = 0;
+        } {
+            alpha = 1;
+            ~pedalAmp = ~currentHatsAmp[0];
+            ~hatsAmp = ~currentHatsAmp[1];
+        };
+
+        ~hatsOn = ~hatsOn.not;
+        ~hatsView.backgroundImage_(~hatsImage, alpha:alpha);
+    });
+
+    ~brushesImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/brushes.jpg");
+    ~brushesView = UserView(~drumsComp, Rect(265, 100, 75, 75)).background_(Color.white).backgroundImage_(~brushesImage);
+    ~brushesOn = true;
+    ~brushesView.mouseDownAction_({
+        var alpha;
+        if(~brushesOn) {
+            alpha = ~drumAlpha;
+            ~rushAmp = 0;
+        } {
+            alpha = 1;
+            ~rushAmp = ~currentRushAmp;
+        };
+
+        ~brushesOn = ~brushesOn.not;
+        ~brushesView.backgroundImage_(~brushesImage, alpha:alpha);
+    });
+
+    ~introButton = Button(~comp, Rect(0, 90, 80,80))
+        .states_([
+            ["Start Remix", Color.black, Color.new(0,0.7,0)],
+            ["End Remix", Color.white, Color.new(0.7,0,0)]        
+        ])
+        .action_({|button|
+            switch (button.value)
+                {1}  { Tdef(\intro).play(quant:(1)) }
+                {0}  { Tdef(\outro).play;Tdef(\intro).stop};
+
+        });
+
+
+
+    ~vocalWidth = 400;
+    // Color.new(0.3,0.3,0.3)
+    ~vocalTabs = TabbedView(~comp, Rect(140, 60, ~vocalWidth, 140), colors:[Color.new(0.2,0.2,0.2)], labels:["Enter lyrics", "Generated Sentences", "Single Words"]);
+    ~vocalTabs.stringColor_(Color.white);
+    ~enterField = SCTextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 40));
+    ~enterField.font_(Font("Helvetica", 30));        
+    ~strippedLyrics = ~lyrics.keys.collect { |item, i| 
+        10.do { |j|
+            item = item.asString.replace(j.asString, "")
+        };
+        item.asSymbol;
+    };
+
+    ~fieldStartButton = Button(~vocalTabs.views[0], Rect(240, 60, 150,30))
+        .states_([
+            ["Sing it!", Color.black, Color.new(0,0.7,0)],
+        ])
+        .action_({|button|
+            ~shitvox.(~enterField.value);
+        });
+    
+    ~enterField.keyDownAction_({|view, char, mod, uni, key|
+        var split;
+        if(char == $ ) {
+            split = ~enterField.string.split($ );
+            if(split.every { |item, i| ~strippedLyrics.includes(item.asSymbol)}.not) {
+                ~enterField.stringColor_(Color.red);
+            } {
+                ~enterField.stringColor_(Color.black);
+            };
+            
+        };
+    });
+
+    ~enterField.action_({|view|
+        ~shitvox.(view.value);
+    });
+
+    ~currentSentence = nil;
+    ~sentences = EZPopUpMenu.new(~vocalTabs.views[1],
+        Rect(10, 10, ~vocalWidth-20, 30),
+    	"Theme: ",
+    	[	
+    		'I love...'         ->  {|a| ~resetLove.(); ~currentSentence = ~iLove},
+    		'Your ___ is bad'   ->  {|a| ~resetBad.(); ~currentSentence = ~isBad},
+    		'You think...'      ->  {|a| ~resetYouThink.(); ~currentSentence = ~youThink}
+    	],
+    	globalAction: {|a| },
+    	initVal: 1,
+    	initAction: true,
+    	labelWidth: 50,
+    	labelHeight: 20,
+    	layout: \horz,
+    	gap: 2@2
+    	);
+    ~sentences.setColors(stringColor:Color.white, menuStringColor:Color.white);
+
+    ~sentencesStartButton = Button(~vocalTabs.views[1], Rect(240, 60, 150,30))
+        .states_([
+            ["Start", Color.black, Color.new(0,0.7,0)],
+            ["Stop", Color.white, Color.new(0.7,0,0)]        
+        ])
+        .action_({|button|
+            switch (button.value)
+                {1}  {~currentSentence.();}
+                {0}  {
+                    ~iLove = {};
+                    ~isBad = {};
+                    ~youThink = {};
+                };
+            
+        });
+
+
+
+    ~speeds = [1, 0.5, 0.25, 0.125, 0.0625];
+    ~speedSpec = ControlSpec(0, 4, \lin, 1, 1); 	// controlSpec
+    ~speedLabel = StaticText(~vocalTabs.views[2], Rect(10,10, 150, 30))
+        .string_("Speed")
+        .stringColor_(Color.white)
+        .font_(Font("Helvetica", 20));
+        
+    ~slowLabel = StaticText(~vocalTabs.views[2], Rect(10, 65, 30, 20))
+        .string_("Slow")
+        .font_(Font("Helvetica", 12))
+        .stringColor_(Color.white);
+    ~speedSlider = Slider(~vocalTabs.views[2], Rect(40, 60, 150, 30))
+    	.value_(0)
+    	.action_({|slider|
+    	    ~wordDur = ~speeds[~speedSpec.map(slider.value)];
+    	});
+	~fastLabel = StaticText(~vocalTabs.views[2], Rect(195, 65, 30, 20))
+        .string_("Fast")
+        .font_(Font("Helvetica", 12))
+        .stringColor_(Color.white);
+        
+    ~speedsStartButton = Button(~vocalTabs.views[2], Rect(240, 60, 150,30))
+        .states_([
+            ["Start", Color.black, Color.new(0,0.7,0)],
+            ["Stop", Color.white, Color.new(0.7,0,0)]        
+        ])
+        .action_({|button|
+            switch (button.value)
+                {1}  {
+                    Tdef(\Vox).play(quant:Quant(1));
+                }
+                {0}  {
+                    Tdef(\Vox).stop;
+                };
+            
+        });
+    
+}.fork(AppClock)
 };
 
-~setFunctions = {
-    ~getDur = { [1].wchoose([1].normalizeSum); };
+
+~setFunctions = {    
+    
+    ~resetLove = {
+        ~iLove = { 
+            var choices;
+            var choice;
+            choices = [
+                "my" + ~singular.choose,
+                "my" + ~descriptions.choose + ~singular.choose,
+                "your" + ~singular.choose,
+                "your" + ~descriptions.choose + ~singular.choose,
+                "my" + ~descriptions.choose + ~singular.choose + "better than your" + ~descriptions.choose + ~singular.choose,
+                "your" + ~descriptions.choose + ~singular.choose + "better than my" + ~descriptions.choose + ~singular.choose,
+            ];
+
+            choice = "I love" + choices.wchoose([1,1,1,1,3,1.5].normalizeSum);
+            ~shitvox.(choice, callback:~iLove)
+        };
+    };
+
+    ~resetBad = {
+        ~isBad = {
+            ~shitvox.("your" + (["body", "body"] ++ ~singular).choose + "is1 bad", 0.25, callback:~isBad)
+        };
+    };
+
+    ~resetYouThink = {
+        ~youThink = { ~shitvox.("you1 think your" + ["my big love", "big", "the best", "best", "fast", "swinging", "wild", "honey", "loving", "a star"].choose, 0.25, callback:~youThink) };
+    };
     
     ~shitvox = {|words, quant=1, min=0.25, callback|{
         var wordsplit = words.split($ );
@@ -746,7 +1063,6 @@ TempoClock.default.tempo_(62/60);
     }.add;
        
 };
-
 
 s.waitForBoot {{
     ~setVariables.();
