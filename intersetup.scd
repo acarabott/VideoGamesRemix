@@ -3,7 +3,8 @@ TempoClock.default.tempo_(62/60);
 ~setVariables = {
     ~continueSentences = true;
     ~sentencePlaying = false;
-    ~kickAmp = 0.85;
+    ~remixStarted = false;
+    ~kickAmp = 1;
     ~hatsAmp = 0.2;
     ~pedalAmp = 0.45;
     ~rushAmp = 0.45;
@@ -27,7 +28,7 @@ TempoClock.default.tempo_(62/60);
     [\outro, \kick, \snare, \pedal, \hats, \rush].do { |item, i|
         Tdef(item).stop;
     };
-    {~text.align_(\left); ~text.string_("")}.fork(AppClock);
+    {~text.string_("")}.fork(AppClock);
     Tdef(\outro).stop;
     ~setVariables.();
     ~note.([3, 7.3]);
@@ -334,17 +335,17 @@ TempoClock.default.tempo_(62/60);
                     sumCount = ~outroNotes.size + j                    
                 };
 
-                ~kickAmp    = sumCount.linlin(0, totalCount-10, 0.85, 0);
-                ~kickAmp    = sumCount.linlin(0, totalCount-10, 0.85, 0);
-                ~hatsAmp    = sumCount.linlin(0, totalCount-10, 0.2;, 0);
-                ~pedalAmp   = sumCount.linlin(0, totalCount-10, 0.45, 0);
-                ~rushAmp    = sumCount.linlin(0, totalCount-10, 0.45, 0);
-                ~snareAmp   = sumCount.linlin(0, totalCount-10, 0.8, 0);
-                ~backingAmp = sumCount.linlin(0, totalCount-10, 0.5, 0);
-                ~fastVoxAmp = sumCount.linlin(0, totalCount-10, 1.5, 0);
+                ~kickAmp    = sumCount.linlin(0, totalCount-15, 0.85, 0);
+                ~kickAmp    = sumCount.linlin(0, totalCount-15, 0.85, 0);
+                ~hatsAmp    = sumCount.linlin(0, totalCount-15, 0.2;, 0);
+                ~pedalAmp   = sumCount.linlin(0, totalCount-15, 0.45, 0);
+                ~rushAmp    = sumCount.linlin(0, totalCount-15, 0.45, 0);
+                ~snareAmp   = sumCount.linlin(0, totalCount-15, 0.8, 0);
+                ~backingAmp = sumCount.linlin(0, totalCount-15, 0.5, 0);
+                ~fastVoxAmp = sumCount.linlin(0, totalCount-15, 1.5, 0);
 
                 if(item == ~outroNotes2) {
-                    choice = item.wchoose([1,1,1,1,1,3,1].normalizeSum);
+                    choice = item.wchoose([1,1,1,1,1,5,1].normalizeSum);
                     if(Tdef(\Vox).isPlaying) {
                         Tdef(\Vox).stop;
                         {~text.string_("")}.fork(AppClock);
@@ -373,7 +374,7 @@ TempoClock.default.tempo_(62/60);
                     ~text.string_("www.molocollective.com");
                     m.stop;
                     1.wait;
-                    m.path_("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logo.png");
+                    m.path_(String.scDir +/+ "SCClassLibrary/DelRay/images/logo.png");
                 }.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
@@ -502,14 +503,14 @@ TempoClock.default.tempo_(62/60);
     w.view.background_(Color.black);
     m = SCMovieView(w, Rect(100,10,800, 450));    
     m.showControllerAndAdjustSize(false, false);
-    m.path_("sounds/videogames.mp4");
+    m.path_(String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.mp4");
     m.muted_(true);
     m.stop;m.currentTime_(0);Tdef(\intro).stop;
     ~text = StaticText(w, Rect(125,460,750,100));
     ~text.background_(Color.black);
     ~text.stringColor_(Color.white);
     ~text.string_("");
-    ~text.align_(\left);
+    ~text.align_(\center);
     ~text.font_(Font("Helvetica", 30));        
 
     ~lyricsComp = CompositeView(w, Rect(1000, 0, 280,760));
@@ -570,7 +571,7 @@ TempoClock.default.tempo_(62/60);
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
     
-    ~logoImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logocrop.png");
+    ~logoImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/logocrop.png");
     ~logoView = UserView(~lyricsComp, Rect(75, 580, 130, 130))
         .backgroundImage_(~logoImage);
 
@@ -589,9 +590,9 @@ TempoClock.default.tempo_(62/60);
     ~drumsLabel.font_(Font("Helvetica", 30));        
     ~drumsLabel.stringColor_(Color.white);
     ~drumsLabel.string_("Drums");
-
+d    
     ~drumAlpha = 0.3;
-    ~kickImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/kick.jpg");
+    ~kickImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/kick.jpg");
     ~kickView = UserView(~drumsComp, Rect(10, 100, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
     ~kickOn = true;
     
@@ -609,7 +610,7 @@ TempoClock.default.tempo_(62/60);
         ~kickView.backgroundImage_(~kickImage, alpha:alpha);
     });
 
-    ~snareImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/snare.jpg");
+    ~snareImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/snare.jpg");
     ~snareView = UserView(~drumsComp, Rect(95, 100, 75, 75)).background_(Color.white).backgroundImage_(~snareImage);
     ~snareOn = true;
     ~snareView.mouseDownAction_({
@@ -626,7 +627,7 @@ TempoClock.default.tempo_(62/60);
         ~snareView.backgroundImage_(~snareImage, alpha:alpha);
     });
 
-    ~hatsImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/hats.jpg");
+    ~hatsImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/hats.jpg");
     ~hatsView = UserView(~drumsComp, Rect(180, 100, 75, 75)).background_(Color.white).backgroundImage_(~hatsImage);
     ~hatsOn = true;
     ~hatsView.mouseDownAction_({
@@ -645,7 +646,7 @@ TempoClock.default.tempo_(62/60);
         ~hatsView.backgroundImage_(~hatsImage, alpha:alpha);
     });
 
-    ~brushesImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/brushes.jpg");
+    ~brushesImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/brushes.jpg");
     ~brushesView = UserView(~drumsComp, Rect(265, 100, 75, 75)).background_(Color.white).backgroundImage_(~brushesImage);
     ~brushesOn = true;
     ~brushesView.mouseDownAction_({
@@ -661,26 +662,49 @@ TempoClock.default.tempo_(62/60);
         ~brushesOn = ~brushesOn.not;
         ~brushesView.backgroundImage_(~brushesImage, alpha:alpha);
     });
-
-    ~introButton = Button(~comp, Rect(0, 90, 80,80))
-        .states_([
-            ["Start Remix", Color.black, Color.new(0,0.7,0)],
-            ["End Remix", Color.white, Color.new(0.7,0,0)]        
-        ])
-        .action_({|button|
-            switch (button.value)
-                {1}  { Tdef(\intro).play(quant:(1)) }
-                {0}  { Tdef(\outro).play;Tdef(\intro).stop};
-
-        });
-
+    
+    ~introImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/cover.jpg");
+    ~introComp = CompositeView(~comp, Rect(0, 80, 100,100));
+    ~introButton = UserView(~introComp, Rect(0, 0, 100, 100))
+        .backgroundImage_(~introImage);
+    ~introLabel = StaticText(~introComp, Rect(0, 50, 100, 50))
+        .background_(Color(0.5,0.5,0.5,0.65))
+        .bounds_(Rect(0,-20,100,20))
+        .align_(\center)
+        .stringColor_(Color.white)
+        .font_(Font("Helvetica", 16))
+        .string_("Start Remix")
+        .background_(Color(0.5,0.5,0.5,0.5));
+    
+    ~introButton.mouseDownAction_({
+        var string, bounds;
+        
+        if(~remixStarted) {
+            string = "Start Remix";
+            bounds = Rect(0,-20,100,20);
+            Tdef(\outro).play;Tdef(\intro).stop
+        } {
+            string = "Stop Remix";
+            bounds = Rect(0,0,100,100) ;
+            
+            ~reset.();
+            Tdef(\intro).play(quant:(1));
+        };
+        ~remixStarted = ~remixStarted.not;
+        {
+            ~introLabel.string_(string);
+            ~introLabel.bounds_(bounds);
+            w.refresh;
+        }.fork(AppClock);
+    });
+        
     ~vocalWidth = 400;
     // Color.new(0.3,0.3,0.3)
     ~vocalTabs = TabbedView(~comp, Rect(140, 60, ~vocalWidth, 140), colors:[Color.new(0.2,0.2,0.2)], labels:["Enter lyrics", "Generated Sentences", "Single Words"]);
     ~vocalTabs.stringColor_(Color.white);
     ~enterField = TextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 40));
-    ~enterField.font_(Font("Helvetica", 30));        
-    ~enterField.string_("enter words from the list");
+    ~enterField.font_(Font("Helvetica", 20));        
+    ~enterField.string_("enter words from the list and press sing it");
     ~strippedLyrics = ~lyrics.keys.collect { |item, i| 
         10.do { |j|
             item = item.asString.replace(j.asString, "")
@@ -694,12 +718,15 @@ TempoClock.default.tempo_(62/60);
             ["Stop singing!", Color.white, Color.new(0.7, 0, 0)]
         ])
         .action_({|button|
+            var func = {{~shitvox.(~enterField.value, quant:0.5, callback:func)}.fork(AppClock)};
             switch (button.value)
                 {1}  {
-                    var func = {{~shitvox.(~enterField.value, callback:func)}.fork(AppClock)};
-                    ~continueSentences = true;
-                    
-                    ~shitvox.(~enterField.value, callback:func);
+                    if(~sentencePlaying.not) {
+                        ~continueSentences = true;
+                        ~shitvox.(~enterField.value, quant:0.5, callback:func);
+                    } {
+                        ~fieldStartButton.valueAction_(0);
+                    };
                 }
                 {0}  {
                     ~continueSentences = false;
@@ -823,15 +850,15 @@ TempoClock.default.tempo_(62/60);
 
         choice = "I love" + choices.wchoose([1,1,1,1,3,1.5].normalizeSum);
         
-        ~shitvox.(choice, callback:~iLove);
+        ~shitvox.(choice, min:0.25, callback:~iLove);
     };
 
     ~isBad = {
-        ~shitvox.("your" + (["body", "body"] ++ ~singular).choose + "is1 bad", 0.25, callback:~isBad);
+        ~shitvox.("your" + (["body", "body"] ++ ~singular).choose + ["", " is "].choose + "bad", 0.25, callback:~isBad);
     };
 
     ~youThink = {
-        ~shitvox.("you1 think your" + ["my big love", "big", "the best", "best", "fast", "swinging", "wild", "honey", "loving", "a star"].choose, 0.25, callback:~youThink) 
+        ~shitvox.("you think your" + ["my big love", "big", "the best", "best", "fast", "swinging", "wild", "honey", "loving", "a star"].choose, 0.25, callback:~youThink) 
         
     };
     
@@ -844,98 +871,98 @@ TempoClock.default.tempo_(62/60);
             var symbol;
             var split, numbers, integers, choice;
             var string = "";
-            
             item = item.replace("?", "");
-            if(item.includes($[)) {
-                split = item.split($[);
-                numbers = split[1].tr($], '');
-                numbers = numbers.split($-);
-                integers = Array.newClear(2);
-                numbers.do { |item, i|
-                    if(item.isString) {
-                        integers[i] = item.asInteger;
+            item = item.replace(" ", "");
+            if(item.size != 0 && ~strippedLyrics.includes(item.asSymbol)) {
+                if(item.includes($[)) {
+                    split = item.split($[);
+                    numbers = split[1].tr($], '');
+                    numbers = numbers.split($-);
+                    integers = Array.newClear(2);
+                    numbers.do { |item, i|
+                        if(item.isString) {
+                            integers[i] = item.asInteger;
+                        } {
+                            integers[i] = item.digit;
+                        };            
+                    };
+                    choice = (integers[0]..integers[1]).choose;
+                    // "choice: ".post; (choice).postln;
+                    symbol = split[0] ++ choice;
+                    symbol = symbol.asSymbol;
+                } {
+                    symbol = item.asSymbol;        
+                };
+                // "symbol: ".post; (symbol).postln;
+                word = ~lyrics[symbol];
+                if(word.isNil) {
+                    word = List[];
+                    10.do { |i|
+                        var attempt = ~lyrics[(symbol ++ (10-i)).asSymbol];
+                        if(attempt.notNil) {
+                            word.add(attempt);
+                        };
+                    };
+                    if(word.size >= 1) {
+                        word = word.choose;
                     } {
-                        integers[i] = item.digit;
-                    };            
-                };
-                choice = (integers[0]..integers[1]).choose;
-                // "choice: ".post; (choice).postln;
-                symbol = split[0] ++ choice;
-                symbol = symbol.asSymbol;
-            } {
-                symbol = item.asSymbol;        
-            };
-            // "symbol: ".post; (symbol).postln;
-            word = ~lyrics[symbol];
-            if(word.isNil) {
-                word = List[];
-                10.do { |i|
-                    var attempt = ~lyrics[(symbol ++ (10-i)).asSymbol];
-                    if(attempt.notNil) {
-                        word.add(attempt);
+                        word = nil;
                     };
                 };
-                if(word.size >= 1) {
+                // "word: ".post; (word).postln;
+                // item.postln;
+
+                if(~text.notNil) {
+                    {
+                        wordsplit[0..i].do { |jtem, j|
+                            var rep = jtem;
+                            10.do { |i|
+                                rep = rep.replace(i.asString, "");
+                            };
+
+                            rep = rep.replace("[", "");
+                            rep = rep.replace("]", "");
+                            rep = rep.replace("-", "");
+                            if(rep == "its") {
+                                rep = "it's";
+                            };
+
+                            string = string + rep;
+                        };
+                        ~text.string_(string);
+
+                    }.fork(AppClock);
+                };
+
+                if(word[0].isArray) {
                     word = word.choose;
-                } {
-                    word = nil;
                 };
-            };
-            // "word: ".post; (word).postln;
-            // item.postln;
 
-            if(~text.notNil) {
-                {
-                    wordsplit[0..i].do { |jtem, j|
-                        var rep = jtem;
-                        10.do { |i|
-                            rep = rep.replace(i.asString, "");
-                        };
-
-                        rep = rep.replace("[", "");
-                        rep = rep.replace("]", "");
-                        rep = rep.replace("-", "");
-                        if(rep == "its") {
-                            rep = "it's";
-                        };
-
-                        string = string + rep;
-                    };
-                    ~text.string_(string);
-
-                }.fork(AppClock);
-            };
-
-            if(word[0].isArray) {
-                word = word.choose;
-            };
-
-            if(word[0] >= 2553394 && (word[0] <= 4463760)) {
-                if((1/3).coin) {
-                    word = word + 3801194;
-                } {
+                if(word[0] >= 2553394 && (word[0] <= 4463760)) {
                     if((1/3).coin) {
-                        word = word + 6391691;
-                    };                
+                        word = word + 3801194;
+                    } {
+                        if((1/3).coin) {
+                            word = word + 6391691;
+                        };                
+                    };
                 };
+                
+                
+                Synth.before(~verb, \DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0, \out, ~verbBus, \amp, ~voxAmp]);
+                dur = ((word[1] - word[0]) / b.sampleRate).round(min).max(min);
+                if((word[1] - word[0] / b.sampleRate) < 0.25) {
+                    dur = 0.25;
+                };
+                if(m.notNil) {
+                    {
+                        m.currentTime_(word[0]/b.sampleRate);
+                        m.start;
+                    }.fork(AppClock);
+                };
+                dur.wait;
             };
 
-            Synth.before(~verb, \DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0, \out, ~verbBus, \amp, ~voxAmp]);
-            // Synth(\DelRayer, [\buf, b, \start, word[0], \end, word[1], \trim, 0.03, \pan, 0]);
-            dur = ((word[1] - word[0]) / b.sampleRate).round(min).max(min);
-            // dur = (((word[1] - word[0]) / b.sampleRate) * 4).ceil / 4;
-
-            // if(symbol == \beer) {
-            //     dur = 0.75;
-            // };
-            // dur = ((word[1] - word[0]) / b.sampleRate);
-            if(m.notNil) {
-                {
-                    m.currentTime_(word[0]/b.sampleRate);
-                    m.start;
-                }.fork(AppClock);
-            };
-            dur.wait;
             // 1.wait;
         };
         
@@ -1009,24 +1036,24 @@ TempoClock.default.tempo_(62/60);
 };
 
 ~loadBuffers = {
-    b = Buffer.read(s, "sounds/videogames.wav");
-    ~kick = Buffer.read(s, "sounds/brushKit/a01_cakbasdrm_11.wav");
+    b = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.wav");
+    ~kick = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/a01_cakbasdrm_11.wav");
     ~pedals = nil!4;
     4.do { |i|
-        ~pedals[i] = Buffer.read(s, "sounds/brushKit/a05_cak_ped_0"++(i+1)++".wav");
+        ~pedals[i] = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/a05_cak_ped_0"++(i+1)++".wav");
     };
-    ~snares = [Buffer.read(s, "sounds/brushKit/jkbsnr_opn_r18.wav"), Buffer.read(s, "sounds/brushKit/jkbsnr_opn_l18.wav")];
+    ~snares = [Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_r18.wav"), Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_l18.wav")];
 
-    ~hatsList = "sounds/brushKit/jkbhht_cls_*".pathMatch;
+    ~hatsList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbhht_cls_*".pathMatch;
     ~hats = nil!4;
 
     ~hats.size.do { |i|
         ~hats[i] = Buffer.read(s, ~hatsList[i]);
     };
 
-    ~snareLeftList = "sounds/brushKit/jkbsnr_opn_l*".pathMatch;
+    ~snareLeftList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_l*".pathMatch;
     ~snaresLeft = nil!~snareLeftList.size;
-    ~snareRightList = "sounds/brushKit/jkbsnr_opn_r*".pathMatch;
+    ~snareRightList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_r*".pathMatch;
     ~snaresRight = nil!~snareRightList.size;
     ~snareLeftList.do { |item, i|
         ~snaresLeft[i] = Buffer.read(s, item);
