@@ -2,16 +2,6 @@
 
 Tdef(\intro).play(quant:(1));
 
-~people = ["I", "you", "they"];
-~feelings = ["love", "like", "want", "say", "play with", "take", "kiss"];
-~prefixs = ["my", "his", "your"];
-~descriptions = ["big", "best", "bad", "bestest", "fast", "favourite", "swinging", "old", "blue", "wild", "drunk"];
-~objects = ["swinging", "car", "yard", "whistling", "video", "video games", "games", "sundress", "undressed", "kiss", "perfume", "play", "everything", "heaven", "you", "honey", "world", "living", "somebody", "beer", "love", "loving", "baby", "me", "singing", "bar", "stars", "fame", "kissing", "pool", "darts", "friends", "falling", "playing", "arms", "body"];
-
-~singular = ["singing", "bar", "fame", "kissing", "playing", "pool", "car", "swinging", "yard", "whistling", "sundress", "body", "kiss", "beer", "love", "loving"];
-~plural = ["friends", "arms"];
-
-
 ~noteVideo = false;
 ~shitvox.("swinging1 in1 the1 back yard pull up in1 your fast car whistling for1 beer", 0.5);
 // ~shitvox.("open up the beer say get two beers for[1-2] my friends", 0.5);

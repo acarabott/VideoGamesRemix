@@ -195,6 +195,17 @@ TempoClock.default.tempo_(62/60);
             ~lyrics.add(key -> value);
         };  
     };
+    
+    
+    ~people = ["I", "you", "they"];
+    ~feelings = ["love", "like", "want", "say", "play with", "take", "kiss"];
+    ~prefixs = ["my", "his", "your"];
+    ~descriptions = ["big", "best", "bad", "bestest", "fast", "favourite", "swinging", "old", "blue", "wild", "drunk"];
+    ~objects = ["swinging", "car", "yard", "whistling", "video", "video games", "games", "sundress", "undressed", "kiss", "perfume", "play", "everything", "heaven", "you", "honey", "world", "living", "somebody", "beer", "love", "loving", "baby", "me", "singing", "bar", "stars", "fame", "kissing", "pool", "darts", "friends", "falling", "playing", "arms", "body"];
+
+    ~singular = ["singing", "bar", "fame", "kissing", "playing", "pool", "car", "swinging", "yard", "whistling", "sundress", "body", "kiss", "beer", "love", "loving"];
+    ~plural = ["friends", "arms"];
+
 };
 
 ~setRoutines = {
