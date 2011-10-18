@@ -210,7 +210,7 @@ TempoClock.default.tempo_(62/60);
 
 };
 
-~setRoutines = {``
+~setRoutines = {
     Tdef(\intro, {
         Tdef(\outro).stop;
         ~setVariables.();
