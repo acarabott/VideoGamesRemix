@@ -11,7 +11,7 @@
 	startup {
 		Document.implementationClass.startup;
 		// make a server window for the internal if you like
-		Server.internal.makeWindow;
+        // Server.internal.makeWindow;
 //		Server.local.makeWindow;
 		// uncomment if you use a startup file
 //		this.loadStartupFiles;

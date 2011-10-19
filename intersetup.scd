@@ -691,7 +691,7 @@ TempoClock.default.tempo_(62/60);
             bounds = Rect(0,-20,100,20);
             Tdef(\outro).play;Tdef(\intro).stop
         } {
-            {m.path_(String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.mp4");}.fork(AppClock);
+            {m.path_(String.scDir +/+ "DelRay/sounds/videogames.mp4");}.fork(AppClock);
             string = "Stop Remix";
             bounds = Rect(0,0,100,100) ;
             
