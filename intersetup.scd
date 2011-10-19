@@ -374,7 +374,7 @@ TempoClock.default.tempo_(62/60);
                     ~text.string_("www.molocollective.com");
                     m.stop;
                     1.wait;
-                    m.path_(String.scDir +/+ "SCClassLibrary/DelRay/images/logo.png");
+                    m.path_(String.scDir +/+ "DelRay/images/logo.png");
                 }.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
@@ -503,7 +503,7 @@ TempoClock.default.tempo_(62/60);
     w.view.background_(Color.black);
     m = SCMovieView(w, Rect(100,10,800, 450));    
     m.showControllerAndAdjustSize(false, false);
-    m.path_(String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.mp4");
+    m.path_(String.scDir +/+ "DelRay/images/start.png");
     m.muted_(true);
     m.stop;m.currentTime_(0);Tdef(\intro).stop;
     ~text = StaticText(w, Rect(125,460,750,100));
@@ -511,18 +511,18 @@ TempoClock.default.tempo_(62/60);
     ~text.stringColor_(Color.white);
     ~text.string_("");
     ~text.align_(\center);
-    ~text.font_(Font("Helvetica", 30));        
+    ~text.font_(Font("Lucida Grande", 28));        
 
     ~lyricsComp = CompositeView(w, Rect(1000, 0, 280,760));
-    ~lyricsLabelFont = Font("Helvetica", 15);
-    ~lyricsTextFont = Font("Helvetica", 15);
+    ~lyricsLabelFont = Font("Lucida Grande", 13);
+    ~lyricsTextFont = Font("Lucida Grande", 13);
 
     ~peopleString = "I  you  your  they  friends  me  my  his  girls  Paul";
     
     ~peopleLabel = SCStaticText(~lyricsComp, Rect(10, 5, 49, 19)).string_("People:").font_(~lyricsLabelFont);
     ~peopleLabel.stringColor_(Color(0.8,0.8,0));
 
-    ~peopleText = StaticText(~lyricsComp, Rect(20, 4, 260, 60))
+    ~peopleText = StaticText(~lyricsComp, Rect(20, 4, 255, 60))
         .string_(~peopleString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
@@ -531,7 +531,7 @@ TempoClock.default.tempo_(62/60);
     ~actionsLabel = StaticText(~lyricsComp, Rect(10, 63, 53, 19)).string_("Actions:").font_(~lyricsLabelFont);
     ~actionsLabel.stringColor_(Color(0.8,0.8,0));
 
-    ~actionsText = StaticText(~lyricsComp, Rect(20, 25, 260, 140))
+    ~actionsText = StaticText(~lyricsComp, Rect(20, 25, 255, 140))
         .string_(~actionsString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
@@ -540,7 +540,7 @@ TempoClock.default.tempo_(62/60);
     ~thingsLabel = StaticText(~lyricsComp, Rect(10, 167, 48, 19)).string_("Things:").font_(~lyricsLabelFont);
     ~thingsLabel.stringColor_(Color(0.8,0.8,0));
 
-    ~thingsText = StaticText(~lyricsComp, Rect(20, 110, 260, 180))
+    ~thingsText = StaticText(~lyricsComp, Rect(20, 110, 255, 180))
         .string_(~thingsString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
@@ -549,51 +549,58 @@ TempoClock.default.tempo_(62/60);
     ~descriptionsLabel = StaticText(~lyricsComp, Rect(10, 286, 86, 19)).string_("Descriptions:").font_(~lyricsLabelFont);
     ~descriptionsLabel.stringColor_(Color(0.8,0.8,0));
 
-    ~descriptionsText = StaticText(~lyricsComp, Rect(20, 290, 260, 60))
+    ~descriptionsText = StaticText(~lyricsComp, Rect(20, 290, 255, 60))
         .string_(~descriptionsString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
 
     ~feelingsString = "love  like  want  say  play  with  take  kiss";
-    ~feelingsLabel = StaticText(~lyricsComp, Rect(10,350, 260, 19)).string_("Feelings:").font_(~lyricsLabelFont);
+    ~feelingsLabel = StaticText(~lyricsComp, Rect(10,350, 255, 19)).string_("Feelings:").font_(~lyricsLabelFont);
     ~feelingsLabel.stringColor_(Color(0.8,0.8,0));
-    ~feelingsText = StaticText(~lyricsComp, Rect(20, 355, 260, 56))
+    ~feelingsText = StaticText(~lyricsComp, Rect(20, 355, 255, 56))
         .string_(~feelingsString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
 
     ~miscString = "its    on    the    are    too    to  on  a  of  in  if  do  for  is  all  time  worth  ever  things  that  than  built  now  name up  game undressed  true  over  down  wanna  here  open  was  every  get  even  heholds  some  idea back  two  only  this  place";        
-    ~miscLabel = StaticText(~lyricsComp, Rect(10, 411, 260, 19)).string_("Misc:").font_(~lyricsLabelFont);
+    ~miscLabel = StaticText(~lyricsComp, Rect(10, 411, 255, 19)).string_("Misc:").font_(~lyricsLabelFont);
     ~miscLabel.stringColor_(Color(0.8,0.8,0));
 
-    ~miscText = StaticText(~lyricsComp, Rect(20, 320, 260, 250))
+    ~miscText = StaticText(~lyricsComp, Rect(20, 320, 255, 250))
         .string_(~miscString)
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
     
-    ~logoImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/logocrop.png");
+    ~logoImage = SCImage.new(String.scDir +/+ "DelRay/images/logocrop.png");
     ~logoView = UserView(~lyricsComp, Rect(75, 580, 130, 130))
         .backgroundImage_(~logoImage);
 
     ~linkText = StaticText(~lyricsComp, Rect(30, 600, 260, 260))
         .string_("www.molocollective.com")
-        .font_(Font("Helvetica", 20))
+        .font_(Font("Lucida Grande", 18))
         .stringColor_(Color.white);
     
     ~comp = CompositeView(w, Rect(50, 550, 1000, 210));
     // ~comp.background_(Color.white);
     ~drumWidth = 340;
-    ~drumsComp = CompositeView(~comp, Rect(570,0, ~drumWidth,140));
+    ~drumsComp = CompositeView(~comp, Rect(570,0, ~drumWidth,200));
     ~drumsComp.background_(Color.black);
-    ~drumsLabel = StaticText(~drumsComp, Rect(0,60,~drumWidth,30));
-    ~drumsLabel.align_(\center);
-    ~drumsLabel.font_(Font("Helvetica", 30));        
-    ~drumsLabel.stringColor_(Color.white);
-    ~drumsLabel.string_("Drums");
-d    
+    ~drumsLabel = StaticText(~drumsComp, Rect(0, 32, ~drumWidth, 85))
+        .align_(\center)
+        .font_(Font("Lucida Grande", 26))
+        .stringColor_(Color.white)
+        .string_("Drums");
+    ~drumInstructions = StaticText(~drumsComp, Rect(0, 90, ~drumWidth, 20))
+        .string_("Click to turn on / off")
+        .stringColor_(Color.white)
+        .align_(\center)
+        .font_(Font("Lucida Grande", 12));
+    
+    ~drumsImageComp = CompositeView(~drumsComp, Rect(0, 115, 340, 85));
+    ~drumsImageComp.background_(Color(0.2,0.2,0.2));
     ~drumAlpha = 0.3;
-    ~kickImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/kick.jpg");
-    ~kickView = UserView(~drumsComp, Rect(10, 100, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
+    ~kickImage = SCImage.new(String.scDir +/+ "DelRay/images/kick.jpg");
+    ~kickView = UserView(~drumsImageComp, Rect(5, 5, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
     ~kickOn = true;
     
     ~kickView.mouseDownAction_({
@@ -610,8 +617,8 @@ d
         ~kickView.backgroundImage_(~kickImage, alpha:alpha);
     });
 
-    ~snareImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/snare.jpg");
-    ~snareView = UserView(~drumsComp, Rect(95, 100, 75, 75)).background_(Color.white).backgroundImage_(~snareImage);
+    ~snareImage = SCImage.new(String.scDir +/+ "DelRay/images/snare.jpg");
+    ~snareView = UserView(~drumsImageComp, Rect(90, 5, 75, 75)).background_(Color.white).backgroundImage_(~snareImage);
     ~snareOn = true;
     ~snareView.mouseDownAction_({
         var alpha;
@@ -627,8 +634,8 @@ d
         ~snareView.backgroundImage_(~snareImage, alpha:alpha);
     });
 
-    ~hatsImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/hats.jpg");
-    ~hatsView = UserView(~drumsComp, Rect(180, 100, 75, 75)).background_(Color.white).backgroundImage_(~hatsImage);
+    ~hatsImage = SCImage.new(String.scDir +/+ "DelRay/images/hats.jpg");
+    ~hatsView = UserView(~drumsImageComp, Rect(175, 5, 75, 75)).background_(Color.white).backgroundImage_(~hatsImage);
     ~hatsOn = true;
     ~hatsView.mouseDownAction_({
         var alpha;
@@ -646,8 +653,8 @@ d
         ~hatsView.backgroundImage_(~hatsImage, alpha:alpha);
     });
 
-    ~brushesImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/brushes.jpg");
-    ~brushesView = UserView(~drumsComp, Rect(265, 100, 75, 75)).background_(Color.white).backgroundImage_(~brushesImage);
+    ~brushesImage = SCImage.new(String.scDir +/+ "DelRay/images/brushes.jpg");
+    ~brushesView = UserView(~drumsImageComp, Rect(260, 5, 75, 75)).background_(Color.white).backgroundImage_(~brushesImage);
     ~brushesOn = true;
     ~brushesView.mouseDownAction_({
         var alpha;
@@ -663,8 +670,8 @@ d
         ~brushesView.backgroundImage_(~brushesImage, alpha:alpha);
     });
     
-    ~introImage = SCImage.new(String.scDir +/+ "SCClassLibrary/DelRay/images/cover.jpg");
-    ~introComp = CompositeView(~comp, Rect(0, 80, 100,100));
+    ~introImage = SCImage.new(String.scDir +/+ "DelRay/images/cover.jpg");
+    ~introComp = CompositeView(~comp, Rect(0, 100, 100,100));
     ~introButton = UserView(~introComp, Rect(0, 0, 100, 100))
         .backgroundImage_(~introImage);
     ~introLabel = StaticText(~introComp, Rect(0, 50, 100, 50))
@@ -672,7 +679,7 @@ d
         .bounds_(Rect(0,-20,100,20))
         .align_(\center)
         .stringColor_(Color.white)
-        .font_(Font("Helvetica", 16))
+        .font_(Font("Lucida Grande", 14))
         .string_("Start Remix")
         .background_(Color(0.5,0.5,0.5,0.5));
     
@@ -684,6 +691,7 @@ d
             bounds = Rect(0,-20,100,20);
             Tdef(\outro).play;Tdef(\intro).stop
         } {
+            {m.path_(String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.mp4");}.fork(AppClock);
             string = "Stop Remix";
             bounds = Rect(0,0,100,100) ;
             
@@ -697,13 +705,18 @@ d
             w.refresh;
         }.fork(AppClock);
     });
-        
+
     ~vocalWidth = 400;
-    // Color.new(0.3,0.3,0.3)
-    ~vocalTabs = TabbedView(~comp, Rect(140, 60, ~vocalWidth, 140), colors:[Color.new(0.2,0.2,0.2)], labels:["Enter lyrics", "Generated Sentences", "Single Words"]);
+    ~vocalLabel = StaticText(~comp, Rect(140,60,~vocalWidth,30))
+        .align_(\center)
+        .font_(Font("Lucida Grande", 26))
+        .stringColor_(Color.white)
+        .string_("Vocals");
+    
+    ~vocalTabs = TabbedView(~comp, Rect(140, 100, ~vocalWidth, 100), colors:[Color.new(0.2,0.2,0.2)], labels:["Enter lyrics", "Generated Sentences", "Single Words"]);
     ~vocalTabs.stringColor_(Color.white);
-    ~enterField = TextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 40));
-    ~enterField.font_(Font("Helvetica", 20));        
+    ~enterField = TextField(~vocalTabs.views[0], Rect(10, 10, ~vocalWidth-20, 30));
+    ~enterField.font_(Font("Lucida Grande", 18));        
     ~enterField.string_("enter words from the list and press sing it");
     ~strippedLyrics = ~lyrics.keys.collect { |item, i| 
         10.do { |j|
@@ -712,7 +725,7 @@ d
         item.asSymbol;
     };
 
-    ~fieldStartButton = Button(~vocalTabs.views[0], Rect(240, 60, 150,30))
+    ~fieldStartButton = Button(~vocalTabs.views[0], Rect(260, 50, 130, 25))
         .states_([
             ["Sing it!", Color.black, Color.new(0,0.7,0)],
             ["Stop singing!", Color.white, Color.new(0.7, 0, 0)]
@@ -753,10 +766,10 @@ d
 
     ~currentSentence = nil;
 
-    ~sentencesStartButton = Button(~vocalTabs.views[1], Rect(240, 60, 150,30))
+    ~sentencesStartButton = Button(~vocalTabs.views[1], Rect(260, 50, 130, 25))
         .states_([
-            ["Start", Color.black, Color.new(0,0.7,0)],
-            ["Stop", Color.white, Color.new(0.7,0,0)]        
+            ["Sing it!", Color.black, Color.new(0,0.7,0)],
+            ["Stop singing!", Color.white, Color.new(0.7,0,0)]        
         ])
         .action_({|button|
             switch (button.value)
@@ -795,29 +808,30 @@ d
 
     ~speeds = [1, 0.5, 0.25, 0.125, 0.0625];
     ~speedSpec = ControlSpec(0, 4, \lin, 1, 1); 	// controlSpec
-    ~speedLabel = StaticText(~vocalTabs.views[2], Rect(10,10, 150, 30))
+    ~speedLabel = StaticText(~vocalTabs.views[2], Rect(10,10, 210, 30))
         .string_("Speed")
+        .align_(\center)
         .stringColor_(Color.white)
-        .font_(Font("Helvetica", 20));
+        .font_(Font("Lucida Grande", 18));
         
-    ~slowLabel = StaticText(~vocalTabs.views[2], Rect(10, 65, 30, 20))
+    ~slowLabel = StaticText(~vocalTabs.views[2], Rect(10,52,30,20))
         .string_("Slow")
-        .font_(Font("Helvetica", 12))
+        .font_(Font("Lucida Grande", 12))
         .stringColor_(Color.white);
-    ~speedSlider = Slider(~vocalTabs.views[2], Rect(40, 60, 150, 30))
+    ~speedSlider = Slider(~vocalTabs.views[2], Rect(40, 50, 150, 25))
     	.value_(0)
     	.action_({|slider|
     	    ~wordDur = ~speeds[~speedSpec.map(slider.value)];
     	});
-	~fastLabel = StaticText(~vocalTabs.views[2], Rect(195, 65, 30, 20))
+	~fastLabel = StaticText(~vocalTabs.views[2], Rect(195, 52, 30, 20))
         .string_("Fast")
-        .font_(Font("Helvetica", 12))
+        .font_(Font("Lucida Grande", 12))
         .stringColor_(Color.white);
         
-    ~speedsStartButton = Button(~vocalTabs.views[2], Rect(240, 60, 150,30))
+    ~speedsStartButton = Button(~vocalTabs.views[2], Rect(260, 50, 130, 25))
         .states_([
-            ["Start", Color.black, Color.new(0,0.7,0)],
-            ["Stop", Color.white, Color.new(0.7,0,0)]        
+            ["Sing it!", Color.black, Color.new(0,0.7,0)],
+            ["Stop singing!", Color.white, Color.new(0.7,0,0)]        
         ])
         .action_({|button|
             switch (button.value)
@@ -1036,24 +1050,28 @@ d
 };
 
 ~loadBuffers = {
-    b = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/videogames.wav");
-    ~kick = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/a01_cakbasdrm_11.wav");
+    
+    b = MP3.readToBuffer(s, String.scDir +/+ "DelRay/sounds/videogames.mp3");
+    // b = Buffer.read(s, String.scDir +/+ "DelRay/sounds/videogames.wav");
+    
+    ~kick = Buffer.read(s, String.scDir +/+ "DelRay/sounds/brushKit/a01_cakbasdrm_11.wav");
     ~pedals = nil!4;
+    
     4.do { |i|
-        ~pedals[i] = Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/a05_cak_ped_0"++(i+1)++".wav");
+        ~pedals[i] = Buffer.read(s, String.scDir +/+ "DelRay/sounds/brushKit/a05_cak_ped_0"++(i+1)++".wav");
     };
-    ~snares = [Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_r18.wav"), Buffer.read(s, String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_l18.wav")];
+    ~snares = [Buffer.read(s, String.scDir +/+ "DelRay/sounds/brushKit/jkbsnr_opn_r18.wav"), Buffer.read(s, String.scDir +/+ "DelRay/sounds/brushKit/jkbsnr_opn_l18.wav")];
 
-    ~hatsList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbhht_cls_*".pathMatch;
-    ~hats = nil!4;
+    ~hatsList = (String.scDir +/+ "DelRay/sounds/brushKit/jkbhht_cls_*").pathMatch;
+    ~hats = nil!~hatsList.size;
 
     ~hats.size.do { |i|
         ~hats[i] = Buffer.read(s, ~hatsList[i]);
     };
 
-    ~snareLeftList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_l*".pathMatch;
+    ~snareLeftList = (String.scDir +/+ "DelRay/sounds/brushKit/jkbsnr_opn_l*").pathMatch;
     ~snaresLeft = nil!~snareLeftList.size;
-    ~snareRightList = String.scDir +/+ "SCClassLibrary/DelRay/sounds/brushKit/jkbsnr_opn_r*".pathMatch;
+    ~snareRightList = (String.scDir +/+ "DelRay/sounds/brushKit/jkbsnr_opn_r*").pathMatch;
     ~snaresRight = nil!~snareRightList.size;
     ~snareLeftList.do { |item, i|
         ~snaresLeft[i] = Buffer.read(s, item);
