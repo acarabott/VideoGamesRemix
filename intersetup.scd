@@ -374,7 +374,7 @@ TempoClock.default.tempo_(62/60);
                     ~text.string_("www.molocollective.com");
                     m.stop;
                     1.wait;
-                    m.path_("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/logo.png");
+                    m.path_("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logo.png");
                 }.fork(AppClock);
             };
             Synth(\DelRayer, [\buf, b, \start, item.last[0], \end, item.last[1], \trim, 0.03, \pan, 0, \amp, 1, \out, ~verbBus]);
@@ -503,7 +503,7 @@ TempoClock.default.tempo_(62/60);
     w.view.background_(Color.black);
     m = SCMovieView(w, Rect(100,10,800, 450));    
     m.showControllerAndAdjustSize(false, false);
-    m.path_("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/start.png");
+    // m.path_("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/start.png");
     m.muted_(true);
     m.stop;m.currentTime_(0);Tdef(\intro).stop;
     ~text = StaticText(w, Rect(125,460,750,100));
@@ -571,7 +571,7 @@ TempoClock.default.tempo_(62/60);
         .font_(~lyricsTextFont)
         .stringColor_(Color.white);
     
-    ~logoImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/logocrop.png");
+    ~logoImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/logocrop.png");
     ~logoView = UserView(~lyricsComp, Rect(75, 580, 130, 130))
         .backgroundImage_(~logoImage);
 
@@ -599,7 +599,7 @@ TempoClock.default.tempo_(62/60);
     ~drumsImageComp = CompositeView(~drumsComp, Rect(0, 115, 340, 85));
     ~drumsImageComp.background_(Color(0.2,0.2,0.2));
     ~drumAlpha = 0.3;
-    ~kickImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/kick.jpg");
+    ~kickImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/kick.jpg");
     ~kickView = UserView(~drumsImageComp, Rect(5, 5, 75, 75)).background_(Color.white).backgroundImage_(~kickImage);
     ~kickOn = true;
     
@@ -617,7 +617,7 @@ TempoClock.default.tempo_(62/60);
         ~kickView.backgroundImage_(~kickImage, alpha:alpha);
     });
 
-    ~snareImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/snare.jpg");
+    ~snareImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/snare.jpg");
     ~snareView = UserView(~drumsImageComp, Rect(90, 5, 75, 75)).background_(Color.white).backgroundImage_(~snareImage);
     ~snareOn = true;
     ~snareView.mouseDownAction_({
@@ -634,7 +634,7 @@ TempoClock.default.tempo_(62/60);
         ~snareView.backgroundImage_(~snareImage, alpha:alpha);
     });
 
-    ~hatsImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/hats.jpg");
+    ~hatsImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/hats.jpg");
     ~hatsView = UserView(~drumsImageComp, Rect(175, 5, 75, 75)).background_(Color.white).backgroundImage_(~hatsImage);
     ~hatsOn = true;
     ~hatsView.mouseDownAction_({
@@ -653,7 +653,7 @@ TempoClock.default.tempo_(62/60);
         ~hatsView.backgroundImage_(~hatsImage, alpha:alpha);
     });
 
-    ~brushesImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/brushes.jpg");
+    ~brushesImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/brushes.jpg");
     ~brushesView = UserView(~drumsImageComp, Rect(260, 5, 75, 75)).background_(Color.white).backgroundImage_(~brushesImage);
     ~brushesOn = true;
     ~brushesView.mouseDownAction_({
@@ -670,7 +670,7 @@ TempoClock.default.tempo_(62/60);
         ~brushesView.backgroundImage_(~brushesImage, alpha:alpha);
     });
     
-    ~introImage = SCImage.new("/Users/arthuc/Documents/programming/computerMusic/fuckhead/images/cover.jpg");
+    ~introImage = SCImage.new("/Users/arthurc/Documents/programming/computerMusic/fuckhead/images/cover.jpg");
     ~introComp = CompositeView(~comp, Rect(0, 100, 100,100));
     ~introButton = UserView(~introComp, Rect(0, 0, 100, 100))
         .backgroundImage_(~introImage);
